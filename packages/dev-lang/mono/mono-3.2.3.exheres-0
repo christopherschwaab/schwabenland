@@ -1,0 +1,37 @@
+# Copyright 2008 Saleem Abdulrasool <compnerd@compnerd.org>
+# Distributed under the temrs of the GNU General Public License v2
+
+AT_M4DIR=( '.' )
+
+require mono autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.11 ] ]
+
+SUMMARY="An opensource implementation of the .NET framework"
+HOMEPAGE="http://www.mono-project.org/"
+DOWNLOADS="http://download.mono-project.com/sources/${PN}/${PNV}.tar.bz2"
+
+LICENCES="( GPL-2 LGPL-2 X11 )"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="X"
+
+DEPENDENCIES="
+    build:
+        dev-util/pkg-config[>=0.20]
+        sys-devel/bison
+        sys-devel/gettext[>=0.10.35]
+    build+run:
+        X? ( dev-dotnet/libgdiplus[>=2.10] )
+"
+
+DEFAULT_SRC_PREPARE_PATCHES=( "${FILES}/${PN}-3.0.6-fix-libdir.patch" )
+
+src_configure() {
+    if ! option X ; then
+        export X11=libX11.so
+    fi
+
+    econf '--without-ikvm-native' '--with-profile4_5' '--without-moonlight' \
+          --with-libgdiplus=$(option X && echo 'installed' || echo 'no')  \
+          $(option_with X x)
+}
+

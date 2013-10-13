@@ -1,0 +1,23 @@
+# Copyright 2013 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require hackage
+
+SUMMARY="Instances for Binary for the types defined in the vector package."
+DESCRIPTION="
+Instances for Binary for the types defined in the vector package, making it easy to serialize vectors to and from disk. We use the generic interface to vectors, so all vector types are supported. Specific instances are provided for unboxed, boxed and storable vectors.
+"
+
+LICENCES="BSD-3"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    $(haskell_lib_dependencies "
+        dev-haskell/Cabal[>=1.8]
+        dev-haskell/vector[>=0.6]
+        dev-haskell/binary[>=0.5.0.1&<0.6]
+        dev-haskell/cereal
+    ")
+"
+

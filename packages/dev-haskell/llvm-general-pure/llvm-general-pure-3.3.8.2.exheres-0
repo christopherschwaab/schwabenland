@@ -1,0 +1,26 @@
+# Copyright 2013 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require hackage
+
+SUMMARY="Pure Haskell LLVM functionality (no FFI)."
+DESCRIPTION="
+A set of pure Haskell types and functions for interacting with LLVM.  It includes an ADT to represent LLVM IR. The llvm-general package builds on this one with FFI bindings to LLVM, but llvm-general-pure does not require LLVM to be available.
+"
+
+LICENCES="BSD-3"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    $(haskell_lib_dependencies "
+        dev-haskell/Cabal[>=1.8]
+        dev-haskell/transformers[>=0.3.0.0]
+        dev-haskell/mtl[>=2.0.1.0]
+        dev-haskell/template-haskell[>=2.5.0.0]
+        dev-haskell/containers[>=0.4.2.1]
+        dev-haskell/setenv[>=0.1.0]
+        dev-haskell/parsec[>=3.1.3]
+    ")
+"
+

@@ -1,0 +1,50 @@
+# Copyright 2013 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require hackage
+
+SUMMARY="A modern parser combinator library with convenient diagnostics."
+DESCRIPTION="
+A modern parser combinator library with slicing and Clang-style colored diagnostics.
+"
+
+LICENCES="BSD-3"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-lang/ghc
+
+    $(haskell_lib_dependencies "
+        dev-haskell/Cabal[>=1.10]
+        dev-haskell/ansi-terminal[=0.6*]
+        dev-haskell/ansi-wl-pprint[>=0.6.6&<0.7]
+        dev-haskell/array[>=0.3.0.2&<0.5]
+        dev-haskell/blaze-builder[>=0.3.0.1&<0.4]
+        dev-haskell/blaze-html[=0.5*]
+        dev-haskell/blaze-markup[=0.5*]
+        dev-haskell/bytestring[>=0.9.1&<0.11]
+        dev-haskell/charset[>=0.3.2.1&<1]
+        dev-haskell/comonad[=3*]
+        dev-haskell/containers[>=0.3&<0.6]
+        dev-haskell/deepseq[>=1.2.0.1&<1.4]
+        dev-haskell/fingertree[>=0.0.1&<0.1]
+        dev-haskell/hashable[=1.2*]
+        dev-haskell/lens[>=3.8.2&<4]
+        dev-haskell/mtl[>=2.0.1&<2.2]
+        dev-haskell/parsers[>=0.5&<1]
+        dev-haskell/reducers[=3*]
+        dev-haskell/semigroups[>=0.8.3.1&<1]
+        dev-haskell/transformers[>=0.2&<0.4]
+        dev-haskell/unordered-containers[>=0.2.1&<0.3]
+        dev-haskell/utf8-string[>=0.3.6&<0.4]
+    ")
+
+    $(haskell_test_dependencies "
+        dev-haskell/directory[>=1.0]
+        dev-haskell/doctest[>=0.9.1]
+        dev-haskell/filepath
+    ")
+"
+

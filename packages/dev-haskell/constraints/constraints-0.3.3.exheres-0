@@ -1,0 +1,21 @@
+# Copyright 2013 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require hackage
+
+SUMMARY="Haskell 98 Groupoids."
+
+LICENCES="BSD-3"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        dev-lang/ghc
+
+    $(haskell_lib_dependencies "
+        dev-haskell/Cabal[>=1.10]
+        dev-haskell/newtype[=0.2*]
+    ")
+"
+

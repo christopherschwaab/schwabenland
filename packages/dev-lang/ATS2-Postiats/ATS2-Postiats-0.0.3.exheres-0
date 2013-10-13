@@ -1,0 +1,36 @@
+# Copyright 2013 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+# FIXME
+export EXJOBS=1
+
+require sourceforge [ project='ats2-lang' suffix=tgz ] \
+        autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.13 ] ]
+
+SUMMARY="A statically typed programming language with dependent and linear types."
+DESCRIPTION="
+A statically typed programming language that unifies implementation with formal specification. It is equipped with a highly expressive type system rooted in the framework Applied Type System, which gives the language its name. In particular, both dependent types and linear types are available in ATS. The current implementation of ATS (ATS/Anairiats) is written in ATS itself. It can be as efficient as C/C++ (see The Computer Language Benchmarks Game for concrete evidence) and supports a variety of programming paradigms that include: functional, imperative, concurrent, and modular programming.
+"
+HOMEPAGE="http://www.ats-lang.org/"
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+"
+#        dev-libs/libgmp [[ [ description = ] ]]
+
+BUGS_TO=""
+
+src_prepare() {
+    find "${WORK}" -name '.keeper' -exec rm -f {} \;
+    sed -i 's~$(prefix)/lib~@libdir@~' "${WORK}/config.mk.in"
+    sed -i 's/find ccomp share prelude libc libats contrib/find ccomp share prelude libc libats contrib ! -empty -a ! -name output/' "${WORK}/Makefile"
+    eaclocal
+    elibtoolize
+    eautoconf
+    eautoheader
+}

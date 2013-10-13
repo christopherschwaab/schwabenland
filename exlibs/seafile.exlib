@@ -1,0 +1,31 @@
+# Copyright 2013 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+# FIXME
+export EXJOBS=1
+
+require autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.13 ] ]
+
+myexparam seafile_version=
+exparam -v SEAFILE_VERSION seafile_version
+
+myexparam libdir=${MY_PN:-'.'}
+myexparam pv=${MY_PV:-'.'}
+SEAFILE_PN=$(exparam libdir)
+SEAFILE_PV=$(exparam pv)
+
+HOMEPAGE="https://github.com/haiwen/$(exparam libdir)"
+DOWNLOADS="http://seafile.googlecode.com/files/seafile-${SEAFILE_VERSION}.tar.gz"
+
+export_exlib_phases src_unpack
+
+seafile_src_unpack() {
+    tar -xaf "${FETCHEDDIR}/${ARCHIVES}" -C "${WORKBASE}"
+    ln -s "${WORKBASE}/seafile-${SEAFILE_VERSION}/${SEAFILE_PN}" \
+          "${WORKBASE}/${PNV}"
+    sed -i "s/AM_INIT_AUTOMAKE(\[1.9/AM_INIT_AUTOMAKE(\[1.9 subdir-objects/" \
+           "${WORK}/configure.ac"
+    [ -e "${WORK}/${SEAFILE_PN}.pc.in" ] && \
+      sed -i 's/prefix=(DESTDIR)/prefix=/' \
+             "${WORK}/${SEAFILE_PN}.pc.in"
+}

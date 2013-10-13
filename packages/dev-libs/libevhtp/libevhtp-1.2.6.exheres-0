@@ -1,0 +1,30 @@
+# Copyright 2013 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require github [ user='ellzey' rev='1.2.6' ] cmake
+
+SUMMARY="A more flexible replacement for libevent's httpd API."
+HOMEPAGE="https://github.com/ellzey/libevhtp"
+
+LICENCES="BSD-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+# FIXME need to add support for -D*_DISABLE_*:STRING=ON
+#MYOPTIONS="
+#    ssl
+#    evthread
+#    regex
+#"
+
+DEPENDENCIES="
+    build+run:
+        dev-libs/libevent
+        dev-libs/openssl
+        dev-libs/oniguruma
+"
+
+src_prepare() {
+    sed -i 's/install (TARGETS libevhtp DESTINATION lib/install (TARGETS libevhtp DESTINATION ${LIB_INSTALL_DIR}/' \
+           "${WORK}/CMakeLists.txt"
+    cmake_src_prepare
+}

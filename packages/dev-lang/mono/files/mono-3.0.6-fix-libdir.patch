@@ -1,0 +1,210 @@
+Source: https://build.opensuse.org/package/view_file?expand=1&file=mono-2.10-libdir.patch&package=mono&project=home%3Acrt0solutions%3Amono
+Upstream: no, upstream is not "architecture-specific", see e.g. https://bugzilla.xamarin.com/show_bug.cgi?id=3650
+Reason: Respect libdir
+
+--- mono-2.8/mcs/tools/gacutil/driver.cs	2010-09-10 21:55:45.000000000 +0100
++++ mono-2.8/mcs/tools/gacutil/driver-new.cs	2010-09-15 13:32:30.335396575 +0100
+@@ -808,8 +808,8 @@
+ 		private static string EnsureLib (string dir)
+ 		{
+ 			DirectoryInfo d = new DirectoryInfo (dir);
+-			if (d.Name == "lib")
++			if (d.Name == "lib" || d.Name == "lib64")
+ 				return dir;
+ 			return Path.Combine (dir, "lib");
+ 		}
+ 
+--- mono-2.6.4/data/mint.pc.in	2010-04-22 16:37:47.000000000 +0100
++++ mono-2.6.4/data/mint.pc-new.in	2010-04-27 00:34:27.000000000 +0100
+@@ -1,6 +1,6 @@
+ prefix=${pcfiledir}/../..
+ exec_prefix=${pcfiledir}/../..
+-libdir=${prefix}/lib
++libdir=@libdir@
+ includedir=${prefix}/include/mono-@API_VER@
+ 
+ 
+--- mono-2.6.4/data/mono.pc.in	2010-04-22 16:37:47.000000000 +0100
++++ mono-2.6.4/data/mono.pc-new.in	2010-04-27 00:34:57.000000000 +0100
+@@ -1,6 +1,6 @@
+ prefix=${pcfiledir}/../..
+ exec_prefix=${pcfiledir}/../..
+-libdir=${prefix}/@reloc_libdir@
++libdir=@libdir@
+ includedir=${prefix}/include/mono-@API_VER@
+ sysconfdir=@sysconfdir@
+ 
+--- mono-2.6.4/data/mono.web.pc.in	2010-04-22 16:37:47.000000000 +0100
++++ mono-2.6.4/data/mono.web.pc-new.in	2010-04-27 00:40:27.000000000 +0100
+@@ -1,4 +1,4 @@
+ Name: Mono.Web
+ Description: Mono ASP.NET extension classes
+ Version: 2.0.0.0
+-Libs: -r:@prefix@/lib/mono/gac/Mono.Web/2.0.0.0__0738eb9f132ed756/Mono.Web.dll
++Libs: -r:@libdir@/mono/gac/Mono.Web/2.0.0.0__0738eb9f132ed756/Mono.Web.dll
+--- mono-2.6.4/data/mono-lineeditor.pc.in	2010-04-22 16:37:47.000000000 +0100
++++ mono-2.6.4/data/mono-lineeditor.pc-new.in	2010-04-27 00:37:17.000000000 +0100
+@@ -1,5 +1,5 @@
+ prefix=${pcfiledir}/../..
+-assemblies_dir=${prefix}/lib/mono-source-libs
++assemblies_dir=@libdir@/mono-source-libs
+ Sources=${assemblies_dir}/getline.cs
+ 
+ Name: Mono.Terminal.LineEditor
+--- mono-2.6.4/data/mono-nunit.pc.in	2010-04-22 16:37:47.000000000 +0100
++++ mono-2.6.4/data/mono-nunit.pc-new.in	2010-04-27 00:37:48.000000000 +0100
+@@ -1,6 +1,6 @@
+ prefix=${pcfiledir}/../..
+ exec_prefix=${prefix}
+-libdir=${exec_prefix}/lib
++libdir=@libdir@
+ 
+ 
+ Name: Mono NUnit
+--- mono-2.6.4/data/mono-options.pc.in	2010-04-22 16:37:47.000000000 +0100
++++ mono-2.6.4/data/mono-options.pc-new.in	2010-04-27 00:38:21.000000000 +0100
+@@ -1,5 +1,5 @@
+ prefix=${pcfiledir}/../..
+-assemblies_dir=${prefix}/lib/mono-source-libs
++assemblies_dir=@libdir@/mono-source-libs
+ Sources=${assemblies_dir}/Options.cs
+ 
+ Name: Mono.Options
+--- mono-2.6.4/data/system.web.extensions.design_1.0.pc.in	2010-04-22 16:37:47.000000000 +0100
++++ mono-2.6.4/data/system.web.extensions.design_1.0.pc-new.in	2010-04-27 00:38:43.000000000 +0100
+@@ -1,4 +1,4 @@
+ Name: System.Web.Extensions.Design
+ Description: System.Web.Extensions.Design ASP.NET 2.0 add-on
+ Version: 1.0.61025.0
+-Libs: -r:@prefix@/lib/mono/gac/System.Web.Extensions.Design/1.0.61025.0__31bf3856ad364e35/System.Web.Extensions.Design.dll
++Libs: -r:@libdir@/mono/gac/System.Web.Extensions.Design/1.0.61025.0__31bf3856ad364e35/System.Web.Extensions.Design.dll
+--- mono-2.6.4/data/system.web.extensions_1.0.pc.in	2010-04-22 16:37:47.000000000 +0100
++++ mono-2.6.4/data/system.web.extensions_1.0.pc-new.in	2010-04-27 00:39:00.000000000 +0100
+@@ -1,4 +1,4 @@
+ Name: System.Web.Extensions
+ Description: System.Web.Extensions ASP.NET 2.0 add-on
+ Version: 1.0.61025.0
+-Libs: -r:@prefix@/lib/mono/gac/System.Web.Extensions/1.0.61025.0__31bf3856ad364e35/System.Web.Extensions.dll
++Libs: -r:@libdir@/mono/gac/System.Web.Extensions/1.0.61025.0__31bf3856ad364e35/System.Web.Extensions.dll
+--- mono-2.6.4/data/system.web.mvc.pc.in	2010-04-22 16:37:47.000000000 +0100
++++ mono-2.6.4/data/system.web.mvc.pc-new.in	2010-04-27 00:39:16.000000000 +0100
+@@ -1,4 +1,4 @@
+ Name: System.Web.Mvc
+ Description: System.Web.Mvc - ASP.NET MVC
+ Version: 1.0.0.0
+-Libs: -r:@prefix@/lib/mono/gac/System.Web.Mvc/1.0.0.0__31bf3856ad364e35/System.Web.Mvc.dll
++Libs: -r:@libidr@/mono/gac/System.Web.Mvc/1.0.0.0__31bf3856ad364e35/System.Web.Mvc.dll
+--- a/configure.in     2012-11-14 10:43:12.228777687 +0000
++++ b/configure.in     2012-11-14 10:45:22.611899154 +0000
+@@ -3226,7 +3226,7 @@ fi
+     echo "prefix=$prefix" > $mcs_topdir/build/config.make
+     echo "exec_prefix=$exec_prefix" >> $mcs_topdir/build/config.make
+     echo "sysconfdir=$sysconfdir" >> $mcs_topdir/build/config.make
+-    echo 'mono_libdir=${exec_prefix}/lib' >> $mcs_topdir/build/config.make
++    echo "mono_libdir=\${exec_prefix}/$reloc_libdir" >> $mcs_topdir/build/config.make
+     echo 'IL_FLAGS = /debug' >> $mcs_topdir/build/config.make
+     echo "RUNTIME = $mono_build_root/runtime/mono-wrapper" >> $mcs_topdir/build/config.make
+     echo "ILDISASM = $mono_build_root/runtime/monodis-wrapper" >> $mcs_topdir/build/config.make
+@@ -3306,7 +3306,7 @@ fi
+       echo "prefix=$prefix" > $srcdir/$olivedir/build/config.make
+       echo "exec_prefix=$exec_prefix" >> $srcdir/$olivedir/build/config.make
+-      echo 'mono_libdir=${exec_prefix}/lib' >> $srcdir/$olivedir/build/config.make
++      echo "mono_libdir=\${exec_prefix}/$reloc_libdir" >> $srcdir/$olivedir/build/config.make
+       echo 'MCS_FLAGS = $(PLATFORM_DEBUG_FLAGS)' >> $srcdir/$olivedir/build/config.make
+       echo "RUNTIME = $mono_build_root/runtime/mono-wrapper" >> $srcdir/$olivedir/build/config.make
+       echo "MONO_VERSION = $myver" >> $srcdir/$olivedir/build/config.make
+ 
+--- mono-2.8/data/monodoc.pc.in	2010-09-10 21:55:45.000000000 +0100
++++ mono-2.8/data/monodoc.pc-new.in	2010-09-22 12:43:38.220677135 +0100
+@@ -1,9 +1,9 @@
+ prefix=@prefix@
+ exec_prefix=@exec_prefix@
+-libdir=@prefix@/lib
++libdir=@libdir@
+ sourcesdir=${libdir}/monodoc/sources
+ 
+ Name: Monodoc
+ Description: Monodoc - Mono Documentation Tools
+ Version: @VERSION@
+-Libs: /r:${prefix}/lib/mono/monodoc/monodoc.dll 
++Libs: /r:${libdir}/mono/monodoc/monodoc.dll 
+--- mono-2.8/data/mono-cairo.pc.in	2010-09-10 21:55:45.000000000 +0100
++++ mono-2.8/data/mono-cairo.pc-new.in	2010-09-22 12:42:53.873541601 +0100
+@@ -1,9 +1,9 @@
+ prefix=${pcfiledir}/../..
+ exec_prefix=${pcfiledir}/../..
+-libdir=${prefix}/@reloc_libdir@
++libdir=@libdir@
+ includedir=${prefix}/include
+ 
+ Name: Mono.Cairo
+ Description: Cairo bindings for Mono
+ Version: @VERSION@
+ Libs: -r:Mono.Cairo
+--- mono-2.8/data/system.web.mvc2.pc.in	2010-09-10 21:55:45.000000000 +0100
++++ mono-2.8/data/system.web.mvc2.pc-new.in	2010-09-22 12:44:16.452759229 +0100
+@@ -1,4 +1,4 @@
+ Name: System.Web.Mvc2
+ Description: System.Web.Mvc - ASP.NET MVC v2
+ Version: 2.0.0.0
+-Libs: -r:@prefix@/lib/mono/gac/System.Web.Mvc/2.0.0.0__31bf3856ad364e35/System.Web.Mvc.dll
++Libs: -r:@libdir@/mono/gac/System.Web.Mvc/2.0.0.0__31bf3856ad364e35/System.Web.Mvc.dll
+--- mono-2.8/docs/Makefile.in	2010-09-10 21:58:21.000000000 +0100
++++ mono-2.8/docs/Makefile-new.in	2010-09-22 12:51:28.223926963 +0100
+@@ -252,7 +252,7 @@
+ top_build_prefix = @top_build_prefix@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+-sourcesdir = $(prefix)/lib/monodoc/sources
++sourcesdir = $(libdir)/monodoc/sources
+ sources_DATA = \
+ 	mono-file-formats.source \
+ 	mono-tools.source \
+--- mono-2.8/docs/Makefile.am	2010-09-10 21:55:45.000000000 +0100
++++ mono-2.8/docs/Makefile-new.am	2010-09-22 12:49:54.369453974 +0100
+@@ -1,4 +1,4 @@
+-sourcesdir = $(prefix)/lib/monodoc/sources
++sourcesdir = @libdir@/monodoc/sources
+ 
+ sources_DATA = \
+ 	mono-file-formats.source \
+--- mono-2.8/data/mono-2.pc.in	2010-09-10 21:55:45.000000000 +0100
++++ mono-2.8/data/mono-2.pc-new.in	2010-09-22 12:54:54.445011590 +0100
+@@ -1,6 +1,6 @@
+ prefix=${pcfiledir}/../..
+ exec_prefix=${pcfiledir}/../..
+-libdir=${prefix}/@reloc_libdir@
++libdir=@libdir@
+ includedir=${prefix}/include/mono-@API_VER@
+ sysconfdir=@sysconfdir@
+ 
+--- a/data/cecil.pc.in       2012-11-14 13:44:09.964890435 +0000
++++ b/data/cecil.pc.in       2012-11-14 13:44:29.834908945 +0000
+@@ -1,4 +1,4 @@
+-assemblies_dir=@prefix@/lib/mono
++assemblies_dir=@libdir@/mono
+ Libraries=${assemblies_dir}/gac/Mono.Cecil/0.9.5.0__0738eb9f132ed756/Mono.Cecil.dll
+ 
+ Name: Mono Internal -- Do not use.
+--- mono-2.10/scripts/Makefile.am	2011-01-31 20:16:05.000000000 +0000
++++ mono-2.10/scripts/Makefile-new.am	2011-02-03 19:14:37.488167039 +0000
+@@ -171,7 +171,7 @@
+ endif
+ else
+ plat_bindir = $(bindir)
+-mono_instdir = $(prefix)/lib/mono
++mono_instdir = @libdir@/mono
+ endif
+ 
+ 
+--- mono-2.10/mcs/build/config-default.make	2011-01-31 20:16:05.000000000 +0000
++++ mono-2.10/mcs/build/config-default-new.make	2011-02-03 20:01:19.554349792 +0000
+@@ -19,7 +19,7 @@
+ endif
+ prefix = /usr/local
+ exec_prefix = $(prefix)
+-mono_libdir = $(exec_prefix)/lib
++mono_libdir = @libdir@
+ sysconfdir = $(prefix)/etc
+ #RUNTIME = mono
+ RUNTIME = false

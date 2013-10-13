@@ -1,0 +1,27 @@
+# Copyright 2013 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+export MY_PN='web.py'
+export MY_PNV="${MY_PN}-${PV}"
+
+require pypi setuptools
+
+SUMMARY="A web framework for Python that is as simple as it is powerful."
+
+HOMEPAGE="http://www.webpy.org/"
+
+LICENCES="public-domain"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+RESTRICT="test"
+
+# FIXME: add optional deps: psycopg2 and graveyarded packages flup, mysql-python.
+DEPENDENCIES="
+    build+run:
+        dev-python/Mako
+"
+
+src_unpack() {
+    edo ln -s "${WORKBASE}/${MY_PNV}" "${WORKBASE}/${PNV}"
+    default
+}

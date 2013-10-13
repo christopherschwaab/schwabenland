@@ -1,0 +1,21 @@
+# Copyright 2010 Markus Rothe <markus@unixforces.net>
+# Distributed under the terms of the GNU General Public License v2
+
+require hackage
+
+SUMMARY="A Haskell library for working with files and directories. Includes code for pattern matching, finding files, modifying file contents, and more."
+
+LICENCES="BSD-3"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    $(haskell_lib_dependencies "
+        dev-haskell/bytestring
+        dev-haskell/directory
+        dev-haskell/filepath
+        dev-haskell/mtl
+        dev-haskell/unix-compat
+    ")
+"
+

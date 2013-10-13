@@ -1,0 +1,18 @@
+# Copyright 2013 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require hackage
+
+SUMMARY="Use template Haskell to generate Uniplate-like functions."
+
+LICENCES="BSD-3"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    $(haskell_lib_dependencies "
+        dev-haskell/mtl[>=1.8]
+        dev-haskell/template-haskell[<2.9]
+    ")
+"
+

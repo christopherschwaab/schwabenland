@@ -1,0 +1,18 @@
+# Copyright 2013 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require seafile [ seafile_version=1.8.1 libdir=libsearpc ]
+
+SUMMARY="A simple and easy-to-use C language RPC framework (including both server side & client side) based on GObject System."
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+
+DEPENDENCIES="
+    build+run:
+        dev-libs/glib:2
+"
+
+DEFAULT_SRC_CONFIGURE_PARAMS=( --disable-demo )
+

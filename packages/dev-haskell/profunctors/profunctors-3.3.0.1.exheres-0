@@ -1,0 +1,22 @@
+# Copyright 2013 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require hackage
+
+SUMMARY="Profunctors extras."
+DESCRIPTION="
+This package provides a number of utilities and constructions that arise when working with profunctors that require minor extensions to Haskell 98.
+"
+
+LICENCES="BSD-3"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    $(haskell_lib_dependencies "
+        dev-haskell/Cabal[>=1.6]
+        dev-haskell/comonad[>=3]
+        dev-haskell/tagged[>=0.4.4]
+    ")
+"
+

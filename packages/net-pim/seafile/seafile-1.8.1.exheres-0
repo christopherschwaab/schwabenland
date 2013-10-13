@@ -1,0 +1,46 @@
+# Copyright 2013 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require seafile [ seafile_version=1.8.1 ]
+
+SUMMARY="An open-source Dropbox replacement."
+HOMEPAGE="http://seafile.com"
+DOWNLOADS="http://seafile.googlecode.com/files/seafile-${PV}.tar.gz"
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="amd64 x86"
+HOMEPAGE="https://github.com/haiwen/seafile"
+MYOPTIONS="
+    server [[ description = [ Build the seafile server. ] ]]
+    client [[ description = [ Build the seafile client tools. ] ]]
+    riak [[ description = [ Enable the riak backend. ] ]]
+    ceph [[ description = [ Enable the ceph backend. ] ]]
+    gui [[ description = [ Enable the GUI. ] ]]
+    python [[ description = [ Build ccnet python bindings. ] ]]
+"
+# FIXME: this is a unity thing right, what to do here?
+#appindicator [[ description = [ Enable app indicator support (yes/no/auto). ] ]]
+
+# FIXME: Missing po files probably indicates something bad, need to fix this...
+RESTRICT='test'
+
+# FIXME I have no idea what the server needs to build/run, the below is speculative.
+DEPENDENCIES="
+    build+run:
+        dev-python/Mako
+        dev-python/simplejson
+        dev-python/webpy
+        x11-libs/libnotify
+        dev-libs/libevent
+        dev-util/intltool
+        gui? ( x11-libs/gtk+ )
+        server? ( dev-libs/libevhtp )
+        ceph? ( sys-cluster/ceph )
+        riak? ( dev-db/riak )
+        python? ( dev-lang/python )
+"
+
+DEFAULT_SRC_CONFIGURE_PARAMS=( --enable-console )
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=( client server riak ceph gui python )
+

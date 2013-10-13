@@ -1,0 +1,25 @@
+# Copyright 2010 Markus Rothe <markus@unixforces.net>
+# Distributed under the terms of the GNU General Public License v2
+
+require hackage
+
+SUMMARY="Binary serialization library"
+DESCRIPTION="
+A binary serialization library, similar to binary, that introduces an isolate primitive for parser
+isolation, and replaces the asynchronous errors with a user-handleable Either type. Similar to
+binary in performance, but uses a strict ByteString instead of a lazy ByteString, thus restricting
+it to operating on finite inputs.
+"
+
+LICENCES="BSD-3"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    $(haskell_lib_dependencies "
+        dev-haskell/array
+        dev-haskell/bytestring
+        dev-haskell/containers
+    ")
+"
+
