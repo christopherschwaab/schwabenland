@@ -1,0 +1,25 @@
+# Copyright 2013 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="An emacs based, generic front-end fully supporting the proof assistants: Isabelle, Coq, and PhoX."
+HOMEPAGE="http://proofgeneral.inf.ed.ac.uk/main"
+DOWNLOADS="http://proofgeneral.inf.ed.ac.uk/releases/ProofGeneral-4.2.tgz"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+
+DEPENDENCIES="
+    build+run:
+        app-editors/emacs[>=23.3]
+"
+RESTRICT="test"
+
+src_prepare() {
+    default
+    edo chmod 0755 "${WORK}/isar/isartags"
+}
+
+src_install() {
+    emake PREFIX="${IMAGE}/usr" install -j1
+}
