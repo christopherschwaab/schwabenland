@@ -1,0 +1,21 @@
+# Copyright 2013 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+FONT="${PN}"
+
+require xfont
+
+SUMMARY="Provides a large character repertoire, so that texts containing rather unusual characters can be rendered pleasingly."
+HOMEPAGE="http://www.quivira-font.com/index.php"
+DOWNLOADS="http://www.quivira-font.com/files/Quivira.ttf"
+
+LICENCES=""
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+
+WORK="${WORKBASE}"
+
+src_install() {
+    insinto /usr/share/fonts/X11/${PN}
+    doins "${FETCHEDDIR}/Quivira.ttf"
+}

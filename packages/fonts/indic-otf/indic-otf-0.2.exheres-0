@@ -1,0 +1,21 @@
+# Copyright 2013 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+FONT="${PN}"
+
+require xfont
+
+SUMMARY="Indic fonts package."
+HOMEPAGE="http://www.indlinux.org/"
+DOWNLOADS="http://www.indlinux.org/downloads/files/${PNV}.tar.gz"
+
+LICENCES=""
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+
+WORK="${WORKBASE}/indic/OpenType"
+
+src_install() {
+    insinto /usr/share/fonts/X11/${PN}
+    doins *.ttf
+}
