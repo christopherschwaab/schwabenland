@@ -1,0 +1,18 @@
+# Copyright 2013 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require gnome-look.org [ pn=equinox content=121881 ]
+
+SUMMARY="Equinox gtk2 theme."
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~x86 ~amd64"
+MYOPTIONS="themes"
+
+DEPENDENCIES="
+    build+run:
+        x11-libs/gtk+:2[>=2.10]
+"
+
+DEFAULT_SRC_CONFIGURE_PARAMS=( --enable-animations )
