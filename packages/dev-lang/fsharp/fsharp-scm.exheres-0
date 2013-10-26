@@ -21,6 +21,8 @@ DEPENDENCIES="
 DEFAULT_SRC_CONFIGURE_PARAMS=( --with-gacdir=/usr/${LIBDIR:-lib}/mono/gac )
 
 src_prepare() {
-    edo sed -i 's~libdir := ${prefix}/lib/~libdir := @libdir@/~' config.make.in
+    sed -i 's~libdir := ${prefix}/lib/~libdir := @libdir@/~' config.make.in
+    sed -i 's~<Import Project="$(DESTDIR)~<Import Project="~g' \
+           src/fsharp/targets.make
     autotools_src_prepare
 }
