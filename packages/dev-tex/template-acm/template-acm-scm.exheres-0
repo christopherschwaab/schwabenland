@@ -1,0 +1,67 @@
+# Copyright 2013 Christopher Schwaab
+# Copy of Olivier Mehani's AUR package.
+# Distributed under the terms of the GNU General Public License v2
+
+require texlive-common
+
+_SIGPROC_URL="http://www.acm.org/sigs/publications"
+_SIGPLAN_URL="http://drupal.sigplan.org/sites/default/files"
+
+SUMMARY="ACM SIG Proceedings Format style for LaTeX (acm_proc_article-sp v3.2SP, sig-alternate v2.4, sigplanconf v2.5 and the unofficial sigplan-proc-varsize v1.4)."
+HOMEPAGE="http://www.acm.org/sigs/publications/proceedings-templates, http://sigplan.acm.org/authorInformation.htm"
+DOWNLOADS="
+    ${_SIGPROC_URL}/sigproc-sp.pdf
+    ${_SIGPROC_URL}/acm_proc_article-sp.cls
+    ${_SIGPROC_URL}/sigproc-sp.tex
+    ${_SIGPROC_URL}/sigproc.bib
+    ${_SIGPROC_URL}/flies.eps
+    ${_SIGPROC_URL}/fly.eps
+    ${_SIGPROC_URL}/rosette.ps
+    ${_SIGPROC_URL}/sig-alternate.pdf
+    ${_SIGPROC_URL}/sig-alternate.cls
+    ${_SIGPROC_URL}/sig-alternate.tex
+    ${_SIGPLAN_URL}/sigplanconf.cls
+    ${_SIGPLAN_URL}/sigplanconf-template.tex
+    ${_SIGPLAN_URL}/sigplanconf-guide.pdf
+    http://www.isi.edu/~johnh/SOFTWARE/LATEX/sigplan-proc-varsize-package.tar.gz
+"
+
+# FIXME
+LICENCES=""
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+
+# FIXME
+DEPENDENCIES="
+    build:
+    build+run:
+"
+
+WORK="${WORKBASE}"
+
+src_install() {
+    cd "${WORK}"
+    insinto /usr/share/texmf-dist/tex/latex/sigproc
+    for f in acm_proc_article-sp.cls \
+             sigproc-sp.tex sigproc.bib \
+             flies.eps \
+             fly.eps \
+             rosette.ps \
+             sig-alternate.pdf sig-alternate.cls sig-alternate.tex; do
+        doins "${FETCHEDDIR}/$f"
+    done
+
+    insinto /usr/share/texmf-dist/tex/latex/sigplan
+    doins "${FETCHEDDIR}"/sigplanconf*
+
+    insinto /usr/share/texmf-dist/tex/latex/sigplan-proc-varsize
+    doins sigplan-proc-varsize.cls
+}
+
+pkg_postinst() {
+    etexmf-update
+}
+
+pkg_postrm() {
+    etexmf-update
+}

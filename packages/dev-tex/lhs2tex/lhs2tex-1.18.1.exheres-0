@@ -1,0 +1,36 @@
+# Copyright 2013 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require hackage [ has_bin=true has_lib=false ] \
+        texlive-common
+
+SUMMARY="Preprocessor for typesetting Haskell sources with LaTeX."
+HOMEPAGE="http://hackage.haskell.org/package/lhs2tex-1.18.1"
+
+LICENCES="GPL"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+
+# FIXME
+DEPENDENCIES="
+    $(haskell_bin_dependencies "
+        dev-haskell/directory
+        dev-haskell/filepath
+        dev-haskell/mtl
+        dev-haskell/process
+        dev-haskell/regex-compat
+    ")
+"
+
+src_prepare() {
+    sed -i "s~texmfDir = texmf~texmfDir = \"${IMAGE}/usr/share/texmf-site\"~" \
+           "${WORK}/Setup.hs"
+}
+
+pkg_postinst() {
+    etexmf-update
+}
+
+pkg_postrm() {
+    etexmf-update
+}
