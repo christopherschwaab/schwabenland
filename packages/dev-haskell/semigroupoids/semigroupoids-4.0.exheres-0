@@ -1,0 +1,22 @@
+# Copyright 2013 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require hackage
+
+SUMMARY="Provides a wide array of semigroupoids and operations for working with semigroups."
+
+LICENCES="BSD-3"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    $(haskell_lib_dependencies "
+        dev-haskell/Cabal[>=1.10]
+        dev-haskell/comonad[=4*]
+        dev-haskell/containers[>=0.3&<0.6]
+        dev-haskell/contravariant[>=0.2.0.1&<1]
+        dev-haskell/semigroups[>=0.8.3.1&<1]
+        dev-haskell/transformers[>=0.2&<0.4]
+    ")
+"
+

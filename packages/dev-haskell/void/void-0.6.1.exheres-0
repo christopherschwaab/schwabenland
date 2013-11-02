@@ -1,0 +1,18 @@
+# Copyright 2012 Markus Rothe
+# Distributed under the terms of the GNU General Public License v2
+
+require hackage
+
+SUMMARY="Haskell 98 logically uninhabited data type"
+
+LICENCES="BSD-3"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    $(haskell_lib_dependencies "
+        dev-haskell/semigroups[>=0.8.2&<0.9]
+        dev-haskell/hashable[>=1.1]
+    ")
+"
+
