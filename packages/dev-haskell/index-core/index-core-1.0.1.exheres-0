@@ -1,0 +1,10 @@
+# Copyright 2011, 2012 Markus Rothe
+# Distributed under the terms of the GNU General Public License v2
+
+require hackage
+
+SUMMARY="Indexed types in the style of McBride's 'Kleisli arrows of outrageous fortune'.'"
+
+LICENCES="BSD-3"
+PLATFORMS="~amd64"
+MYOPTIONS=""
