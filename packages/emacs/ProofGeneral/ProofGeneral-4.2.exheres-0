@@ -15,6 +15,8 @@ DEPENDENCIES="
 "
 RESTRICT="test"
 
+DEFAULT_SRC_PREPARE_PATCHES=("${FILES}/pghomedefault-${PV}.patch")
+
 src_prepare() {
     default
     edo chmod 0755 "${WORK}/isar/isartags"
