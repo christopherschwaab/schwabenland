@@ -34,6 +34,7 @@ DEPENDENCIES="
         x11-libs/libnotify
         dev-libs/libevent
         dev-util/intltool
+        net-libs/ccnet
         gui? ( x11-libs/gtk+ )
         server? ( dev-libs/libevhtp )
         ceph? ( sys-cluster/ceph )
