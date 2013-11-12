@@ -11,6 +11,7 @@ A set of pure Haskell types and functions for interacting with LLVM.  It include
 LICENCES="BSD-3"
 PLATFORMS="~amd64"
 MYOPTIONS=""
+RESTRICT="test"
 
 DEPENDENCIES="
     $(haskell_lib_dependencies "
