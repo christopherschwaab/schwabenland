@@ -11,6 +11,7 @@ A set of Haskell bindings for LLVM. Unlike other current Haskell bindings, it us
 LICENCES="BSD-3"
 PLATFORMS="~amd64"
 MYOPTIONS=""
+RESTRICT="test"
 
 DEPENDENCIES="
     build+run:
