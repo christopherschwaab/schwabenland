@@ -8,6 +8,7 @@ SUMMARY="Manipulating Java source: abstract syntax, lexer, parser, and pretty-pr
 LICENCES="BSD-3"
 PLATFORMS="~amd64"
 MYOPTIONS=""
+RESTRICT="test"
 
 DEPENDENCIES="
     $(haskell_lib_dependencies "
