@@ -17,6 +17,7 @@ indexed variants.
 LICENCES="BSD-3"
 PLATFORMS="~amd64"
 MYOPTIONS=""
+RESTRICT="test"
 
 DEPENDENCIES="
     build+run:
