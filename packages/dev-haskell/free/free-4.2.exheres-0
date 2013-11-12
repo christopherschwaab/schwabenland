@@ -1,0 +1,25 @@
+# Copyright 2013 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require hackage
+
+SUMMARY="Keyed functors and containers."
+
+LICENCES="BSD-3"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    $(haskell_lib_dependencies "
+        dev-haskell/Cabal[>=1.10]
+        dev-haskell/bifunctors[=4*]
+        dev-haskell/comonad[=4*]
+        dev-haskell/distributive[>=0.2.1]
+        dev-haskell/mtl[>=2.0.1.0&<2.2]
+        dev-haskell/profunctors[=4*]
+        dev-haskell/semigroupoids[=4*]
+        dev-haskell/semigroups[>=0.8.3.1&<1]
+        dev-haskell/transformers[>=0.2.0&<0.4]
+    ")
+"
+
