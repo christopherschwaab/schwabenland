@@ -1,0 +1,8 @@
+# Copyright 2013 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="git://code.l3ib.org/.users/daf/${PN}.git"
+
+require scm-git lal
+
+PLATFORMS="~amd64 ~x86"
