@@ -1,0 +1,28 @@
+# Copyright 2013 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+GITHUB_REVISION="v${PV}"
+require github [ user=joyent ]
+
+SUMMARY="Cross-platform asynchronous I/O."
+HOMEPAGE="https://github.com/joyent/libuv"
+
+LICENCES="MIT"
+SLOT="0"
+RESTRICT="test"
+
+PLATFORMS="~amd64 ~x86"
+
+WORK="${WORKBASE}/${PN}-${PV}"
+
+src_compile() {
+    make
+}
+
+src_install() {
+    dolib ${PN}.so
+    dolib ${PN}.a
+
+    insinto /usr/include
+    doins -r include/*
+}

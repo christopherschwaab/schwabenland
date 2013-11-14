@@ -1,0 +1,7 @@
+# Copyright 2013 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+GITHUB_REVISION="v${PV}"
+require libuv
+
+PLATFORMS="~amd64 ~x86"
