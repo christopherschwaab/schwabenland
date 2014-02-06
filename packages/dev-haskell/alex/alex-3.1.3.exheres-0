@@ -1,0 +1,20 @@
+# Copyright 2008 Santiago M. Mola
+# Copyright 2009, 2010 Ingmar Vanhassel
+# Distributed under the terms of the GNU General Public License v2
+
+require hackage [ has_bin=true has_lib=false ]
+
+SUMMARY="A tool for generating lexical analysers in Haskell"
+HOMEPAGE="http://www.haskell.org/alex/ ${HOMEPAGE}"
+
+LICENCES="BSD-3"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    $(haskell_bin_dependencies "
+        dev-haskell/QuickCheck[>=2]
+    ")
+"
+
