@@ -1,0 +1,163 @@
+# Copyright 2007 Bryan Østergaard
+# Copyright 2008 Saleem Abdulrasool <compnerd@compnerd.org>
+# Distributed under the terms of the GNU General Public License v2
+
+require bash-completion easy-multibuild systemd-service
+
+SUMMARY="Common linux utilities"
+HOMEPAGE="http://git.kernel.org/?p=utils/${PN}/${PN}.git"
+DOWNLOADS="mirror://kernel/linux/utils/${PN}/v$(ever range 1-2)/${PNV}.tar.xz"
+
+REMOTE_IDS="freecode:${PN}"
+
+MY_UPSTREAM="http://www.kernel.org/pub/linux/utils/${PN}/v$(ever range 1-2)/v${PV}"
+UPSTREAM_CHANGELOG="${MY_UPSTREAM}-ChangeLog"
+UPSTREAM_RELEASE_NOTES="${MY_UPSTREAM}-ReleaseNotes"
+
+LICENCES="GPL-2 GPL-3 || ( LGPL-3 LGPL-2.1 ) BSD-3"
+SLOT="0"
+MYOPTIONS="
+    static
+    systemd
+    gtk-doc
+    udev [[
+        description = [ Enable udev support (*only* ever disable this to break a dependency cycle) ]
+        note = [ Usually, we hard-enable udev. This option is *solely* to break
+                 a dep-cycle between systemd/udev->util-linux->systemd/udev.
+                 Do NOT introduce new udev options.
+        ]
+    ]]
+    session-management [[
+        description = [ enable utmp/wtmp record updates via libutempter ]
+    ]]
+    multibuild_c: 32 64
+"
+
+DEPENDENCIES="
+    build:
+        dev-libs/libxslt
+        sys-devel/gettext[>=0.14.1]
+        virtual/pkg-config
+        gtk-doc? ( dev-doc/gtk-doc[>=1.10] )
+    build+run:
+        !sys-apps/eject [[
+            description = [ util-linux now provides eject ]
+            resolution = uninstall-blocked-after
+        ]]
+        !sys-apps/shadow[<4.1.5.1-r2] [[
+            description = [ util-linux now provides nologin ]
+            resolution = upgrade-blocked-before
+        ]]
+        !sys-apps/sysvinit[<2.88-r4] [[
+            description = [ util-linux now installs tools previously provided by sysvinit ]
+            resolution = upgrade-blocked-before
+        ]]
+        !sys-apps/sysvinit-tools[<2.88-r5] [[
+            description = [ util-linux now provides mesg, sulogin and utmpdump ]
+            resolution = uninstall-blocked-after
+        ]]
+        !sys-apps/util-linux-ng [[
+            description = [ Upstream renamed util-linux-ng to util-linux ]
+            resolution = uninstall-blocked-after
+        ]]
+        !app-shells/bash-completion[<1.3_p20110628-r2] [[
+            description = [ util-linux now provides its own bash-completions ]
+            resolution = upgrade-blocked-before
+        ]]
+        sys-libs/glibc[>=2.10]
+        sys-libs/libcap-ng[multibuild_c:*(-)?]
+        sys-libs/ncurses[>=5.6][multibuild_c:*(-)?] [[
+            note = [ this is required as most of the tools have been converted to use ncurses ]
+        ]]
+        sys-libs/pam[multibuild_c:*(-)?]
+        sys-libs/zlib[multibuild_c:*(-)?]
+        session-management? ( x11-libs/libutempter[multibuild_c:*(-)?] )
+        udev? ( sys-apps/systemd[multibuild_c:*(-)?] )
+    test:
+        sys-apps/bc
+"
+
+DEFAULT_SRC_INSTALL_EXTRA_DOCS=( HISTORY VERSION )
+
+src_prepare() {
+    # disable failing tests
+    edo rm tests/ts/fdisk/{gpt,mbr-{non,}dos-mode,sunlabel}
+    edo rm tests/ts/ipcs/limits2
+    edo rm tests/expected/cal/bigyear
+    edo rm tests/expected/last/{ipv6,last}
+
+    # only works on btrfs, ext4, ocfs2, and xfs filesystems
+    edo rm tests/ts/misc/fallocate
+
+    option !session-management && edo rm -rf tests/ts/utmpdump
+
+    default
+}
+
+configure_one_multibuild() {
+    # Conflict Resolution:
+    # - coreutils
+    #   * kill
+    # - ncurses
+    #   * reset
+    # - shadow
+    #   * chfn
+    #   * chsh
+    #   * login
+    #   * newgrp
+    #   * su
+    #   * vipw
+    local conflicts=( chfn-chsh kill login newgrp reset su vipw )
+
+    # Deprecated Tools:
+    # deprecated-last is deprecated in favor of the new implementation merged from sysvinit
+    # deprecated-mount is deprecated in favor of libmount + sys-util/{,u}mount in util-linux
+    # line is deprecated in favor of head
+    local deprecated=( deprecated-last deprecated-mount line )
+
+    local enabled_tools=(
+        agetty bfs cramfs cytune eject fallocate fdformat fsck hwclock last losetup mesg more
+        mount mountpoint nsenter nologin partx pg pivot_root raw rename schedutils setpriv
+        setterm sulogin switch_root ul unshare uuidd wall wdctl
+    )
+
+    local disabled_tools=( runuser write )
+
+    econf \
+        --libdir=/${LIBDIR} \
+        --localstatedir=/run \
+        --enable-fs-paths-extra=/usr/sbin \
+        --enable-libblkid \
+        --enable-libmount \
+        --enable-libuuid \
+        --enable-nls \
+        $(option_enable static static) \
+        --with-ncurses \
+        --without-python \
+        --without-slang \
+        --without-audit \
+        --without-selinux \
+        $(for tool in "${enabled_tools[@]}" ; do echo --enable-${tool} ; done) \
+        $(for tool in "${disabled_tools[@]}" ; do echo --disable-${tool} ; done) \
+        $(for tool in "${conflicts[@]}" ; do echo --disable-${tool} ; done) \
+        $(for tool in "${deprecated[@]}" ; do echo --disable-${tool} ; done) \
+        $(option_enable gtk-doc) \
+        $(option_with session-management utempter) \
+        $(option_enable session-management utmpdump) \
+        $(option_enable systemd socket-activation) \
+        $(option_with systemd systemdsystemunitdir ${SYSTEMDSYSTEMUNITDIR}) \
+        $(option_with udev)
+}
+
+src_install() {
+    easy-multibuild_src_install
+
+    edo rm -rf "${IMAGE}"/usr/share/bash-completion
+
+    edo pushd bash-completion
+        edo rm Makemodule.am
+        for i in *; do
+            dobashcompletion "${i}" "${i}"
+        done
+    edo popd
+}
