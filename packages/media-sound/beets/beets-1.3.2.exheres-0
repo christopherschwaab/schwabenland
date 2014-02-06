@@ -1,0 +1,22 @@
+# Copyright 2013 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require pypi setuptools
+
+SUMMARY="A media library management system: tagger and library organizer."
+
+HOMEPAGE="http://beets.radbox.org/"
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+
+# FIXME plugins?
+DEPENDENCIES="
+    build+run:
+        dev-python/mutagen
+        dev-python/munkres
+        dev-python/musicbrainzngs
+        dev-python/Unidecode
+        dev-python/PyYAML
+"

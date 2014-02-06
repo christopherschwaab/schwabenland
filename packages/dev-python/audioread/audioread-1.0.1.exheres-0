@@ -1,0 +1,27 @@
+# Copyright 2013 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require pypi setuptools
+
+SUMMARY="A multi-library, cross-platform audio decoding module"
+
+HOMEPAGE="https://github.com/sampsyo/audioread"
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+# FIXME implement gst-python and pymad for gstreamer and mad backends. 
+MYOPTIONS="
+    gstreamer [[ description = [ Include support for gstreamer backend. ] ]]
+    mad [[ description = [ Include support for mad backend. ] ]]
+"
+
+DEPENDENCIES="
+    build+run:
+        media/ffmpeg
+        gstreamer? ( dev-python/gst-python )
+        mad? ( dev-python/pymad )
+"
+
+# FIXME
+RESTRICT="test"

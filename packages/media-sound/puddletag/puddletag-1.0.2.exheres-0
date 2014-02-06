@@ -1,0 +1,28 @@
+# Copyright 2014 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require sourceforge [ suffix='tar.gz' ] \
+        setuptools
+
+SUMMARY="An audio tag editor with a spreadsheet like layout."
+HOMEPAGE="http://puddletag.sourceforge.net/"
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+# FIXME
+#MYOPTIONS="
+#    pillow
+#    quodlibet"
+RESTRICT='test'
+
+# FIXME versions
+DEPENDENCIES="
+    build+run:
+        media-libs/chromaprint
+        dev-python/mutagen
+        dev-python/configobj
+        dev-python/python-musicbrainz2
+        dev-python/pyparsing
+        dev-python/PyQt4
+"

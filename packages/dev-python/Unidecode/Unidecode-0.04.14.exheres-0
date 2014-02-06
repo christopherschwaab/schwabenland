@@ -1,0 +1,12 @@
+# Copyright 2013 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require pypi setuptools
+
+SUMMARY="ASCII transliterations of Unicode text."
+
+HOMEPAGE="http://www.tablix.org/~avian/git/"
+
+LICENCES="GPL"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
