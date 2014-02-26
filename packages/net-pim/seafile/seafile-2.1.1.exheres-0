@@ -1,11 +1,10 @@
 # Copyright 2013 Christopher Schwaab
 # Distributed under the terms of the GNU General Public License v2
 
-require seafile [ seafile_version=1.8.1 ]
+require seafile [ seafile_version=${PV} ]
 
 SUMMARY="An open-source Dropbox replacement."
 HOMEPAGE="http://seafile.com"
-DOWNLOADS="http://seafile.googlecode.com/files/seafile-${PV}.tar.gz"
 
 LICENCES="GPL-3"
 SLOT="0"
@@ -23,7 +22,7 @@ MYOPTIONS="
 #appindicator [[ description = [ Enable app indicator support (yes/no/auto). ] ]]
 
 # FIXME: Missing po files probably indicates something bad, need to fix this...
-RESTRICT='test'
+#RESTRICT='test'
 
 # FIXME I have no idea what the server needs to build/run, the below is speculative.
 DEPENDENCIES="
@@ -34,7 +33,7 @@ DEPENDENCIES="
         x11-libs/libnotify
         dev-libs/libevent
         dev-util/intltool
-        net-libs/ccnet
+        net-libs/ccnet[>=1.4.0]
         gui? ( x11-libs/gtk+ )
         server? ( dev-libs/libevhtp )
         ceph? ( sys-cluster/ceph )
