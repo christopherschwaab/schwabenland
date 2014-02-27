@@ -12,6 +12,7 @@ PLATFORMS="~amd64 ~x86"
 DEPENDENCIES="
     build+run:
         dev-libs/glib:2
+        dev-libs/jansson[>=2.2.1]
 "
 
 DEFAULT_SRC_CONFIGURE_PARAMS=( --disable-demo )
