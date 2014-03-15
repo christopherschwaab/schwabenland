@@ -11,7 +11,7 @@ MYOPTIONS=""
 
 DEPENDENCIES="
     $(haskell_lib_dependencies "
-        dev-haskell/semigroups[>=0.8.2&<0.9]
+        dev-haskell/semigroups[>=0.8.2]
         dev-haskell/hashable[>=1.1]
     ")
 "
