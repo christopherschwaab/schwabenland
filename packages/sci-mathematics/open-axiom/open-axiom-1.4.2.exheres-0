@@ -1,0 +1,63 @@
+# Copyright 2014 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+# FIXME
+export EXJOBS=1
+
+require sourceforge
+
+SUMMARY="An open source platform for symbolic, algebraic, and numerical computations."
+DESCRIPTION="
+OpenAxiom is an open source platform for symbolic, algebraic, and numerical computations. It offers an interactive environment, an expressive programming language, a compiler, a large set of mathematical libraries of interest to researchers and practitioners of computational sciences.
+OpenAxiom strives to support ubiquitous, advanced, high quality open source computer algebra on major operating systems, in particular major Unix variants, GNU/Linux variants, Windows, and handheld devices. It aims at being the open source computer algebra system of choice for research, teaching, engineering, etc.
+"
+HOMEPAGE="http://www.open-axiom.org"
+
+LICENCES="open-axiom"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS="
+    threads [[ description = [ Enable thread support. ] ]]
+    profiling [[ description = [ Enable profiling. ] ]]
+    checking [[ description = [ Enable runtime checking. ] ]]
+    X
+    qt [[ requires = X ]]
+    (
+        gcl
+        sbcl
+        clisp
+        ecl
+        clozure
+    ) [[ number-selected = exactly-one ]]
+"
+
+DEPENDENCIES="
+    build:
+        sbcl? ( dev-lang/sbcl )
+        app-text/texlive-core
+    build+run:
+        X? ( x11-libs/libXpm )
+        qt? ( x11-libs/qt:4 )
+"
+
+RESTRICT="strip"
+BUGS_TO="christopher.schwaab@gmail.com"
+
+src_configure() {
+    econf \
+        $(option sbcl && echo --with-lisp=sbcl) \
+        $(option clisp && echo --with-lisp=clisp) \
+        $(option ecl && echo --with-lisp=ecl) \
+        $(option clozure && echo --with-lisp=clozure)
+        #$(option_with X x) \
+        #$(option_enable threads) \
+        #$(option_enable profiling) \
+        #$(option_enable checking) \
+        #$(option_enable gcl)
+}
+
+src_install() {
+    find "${WORK}" -type d -empty -exec rmdir {} \;
+    default
+}
+
