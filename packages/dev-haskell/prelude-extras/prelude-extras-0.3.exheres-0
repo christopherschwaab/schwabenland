@@ -1,9 +1,0 @@
-# Copyright 2013 Christopher Schwaab
-# Distributed under the terms of the GNU General Public License v2
-
-require hackage
-
-SUMMARY="Haskell 98 - higher order versions of Prelude classes."
-
-LICENCES="BSD-3"
-PLATFORMS="~amd64"

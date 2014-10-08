@@ -1,0 +1,38 @@
+# Copyright 2014 Jorge Aparicio
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_REPOSITORY="http://android.googlesource.com/platform/system/core.git"
+SCM_CHECKOUT_TO="android-system-core"
+
+require scm-git udev-rules
+
+SUMMARY="Android debug bridge"
+HOMEPAGE="https://android.googlesource.com/platform/system/core"
+
+LICENCES="Apache-2.0"
+SLOT="0"
+PLATFORMS="~amd64"
+
+DEPENDENCIES="
+    build+run:
+        group/plugdev
+        dev-libs/openssl
+        sys-libs/glibc
+        sys-libs/zlib
+"
+
+src_compile() {
+    pushd adb
+
+    edo cp "${FILES}"/Makefile .
+    emake
+
+    popd
+}
+
+src_install() {
+    install_udev_files
+    exeinto /usr/bin
+    doexe adb/adb
+}
+

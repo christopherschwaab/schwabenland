@@ -40,7 +40,7 @@ DEPENDENCIES="
         qt? ( x11-libs/qt:4 )
 "
 
-RESTRICT="strip binchecks installsources"
+RESTRICT="strip"
 BUGS_TO="christopher.schwaab@gmail.com"
 
 src_configure() {

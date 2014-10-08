@@ -1,0 +1,36 @@
+# Copyright 2014 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require github [ user=schuhschuh tag=${PV} ] cmake
+
+SUMMARY="A library that implements commandline flags processing for C++."
+DESCRIPTION="
+A replacement for getopt(). It has increased flexibility, including built-in support for C++ types
+like string, and the ability to define flags in the source file in which they're used. 
+"
+HOMEPAGE="https://code.google.com/p/gflags/"
+DOWNLOADS="https://github.com/schuhschuh/${PN}/archive/v${PV}.tar.gz -> ${PNV}.tgz"
+
+LICENCES="BSD-3"
+SLOT="0"
+PLATFORMS="~x86 ~amd64"
+MYOPTIONS="
+    (
+        shared [[ description = [ Build the shared library. ] ]]
+        static [[ description = [ Build the static library. ] ]]
+    ) [[ number-selected = at-least-one ]]
+"
+
+BUGS_TO="christopher.schwaab@gmail.com"
+
+CMAKE_SRC_CONFIGURE_PARAMS=( -DLIBRARY_INSTALL_DIR:STRING=${LIBDIR} )
+CMAKE_SRC_CONFIGURE_OPTION_BUILDS=( 'shared SHARED_LIBS' 'static STATIC_LIBS' )
+
+# FIXME
+RESTRICT=( test )
+
+src_prepare() {
+    sed -e 's/LIBRARY_INSTALL_DIR lib)$/LIBRARY_INSTALL_DIR lib${LIB_SUFFIX})/' \
+        -e 's~CONFIG_INSTALL_DIR[[:space:]]*lib/cmake/${PACKAGE_NAME})~CONFIG_INSTALL_DIR lib${LIB_SUFFIX}/cmake/${PACKAGE_NAME})~' \
+        -i CMakeLists.txt
+}
