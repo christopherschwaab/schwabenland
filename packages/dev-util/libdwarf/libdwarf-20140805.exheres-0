@@ -1,0 +1,55 @@
+# Copyright 2014 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="A library for reading and writing DWARF information."
+DESCRIPTION="
+The DWARF Debugging Information Format is of interest to programmers working on compilers and
+debuggers (and anyone interested in reading or writing DWARF information). It was developed by a
+committee (known as the PLSIG at the time) starting around 1991. Starting around 1991 SGI developed
+the libdwarf and dwarfdump tools for internal use and as part of SGI IRIX developer tools. Since
+that time dwarfdump and libdwarf have been shipped (as an executable and archive respectively, not
+source) with every release of the SGI MIPS/IRIX C compiler. In 1994 (I think the correct year) SGI
+agreed (at my request) to open-source libdwarf (and in 1999 to open-source dwarfdump) so anyone
+could use them.
+"
+HOMEPAGE="http://www.prevanders.net/dwarf.html"
+DOWNLOADS="http://www.prevanders.net/${PNV}.tar.gz"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~x86 ~amd64"
+
+DEPENDENCIES="
+    build+run:
+        dev-util/elfutils
+"
+
+BUGS_TO="christopher.schwaab@gmail.com"
+
+WORK="${WORKBASE}/dwarf-${PV}"
+
+DEFAULT_SRC_CONFIGURE_PARAMS=( --enable-shared )
+
+src_prepare() {
+    default
+    sed -e 's~./tag_tree_build~LD_LIBRARY_PATH=../libdwarf/ ./tag_tree_build~g' \
+        -e 's~./tag_attr_build~LD_LIBRARY_PATH=../libdwarf/ ./tag_attr_build~g' \
+        -i "${WORK}/dwarfdump/Makefile.in"
+    sed -e 's~./tag_tree_build~LD_LIBRARY_PATH=../libdwarf/ ./tag_tree_build~g' \
+        -e 's~./tag_attr_build~LD_LIBRARY_PATH=../libdwarf/ ./tag_attr_build~g' \
+        -i "${WORK}/dwarfdump2/Makefile.in"
+}
+
+src_install() {
+    insinto /usr/include/
+    doins libdwarf/{dwarf,libdwarf}.h
+    dolib libdwarf/libdwarf.a
+    dolib.so libdwarf/libdwarf.so
+
+    dobin dwarfdump2/dwarfdump
+    doman dwarfdump2/dwarfdump.1
+    insinto /usr/share/doc/${PNV}/
+    doins dwarfdump2/dwarfdump.conf
+
+    emagicdocs
+}
