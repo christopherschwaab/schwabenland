@@ -1,0 +1,55 @@
+# Copyright 2014 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require seafile [ seafile_version=${PV} ]
+
+SUMMARY="An open-source Dropbox replacement."
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="amd64 x86"
+HOMEPAGE="http://seafile.com/"
+MYOPTIONS="
+    server [[ description = [ Build the seafile server. ] ]]
+    client [[ description = [ Build the seafile client tools. ] ]]
+    riak [[ description = [ Enable the riak backend. ] ]]
+    python [[ description = [ Build ccnet python bindings. ] ]]
+    fuse [[ description = [ Allow direct access to files on the server through fuse. ] ]]
+"
+# FIXME: this is a unity thing right, what to do here?
+#appindicator [[ description = [ Enable app indicator support (yes/no/auto). ] ]]
+RESTRICT='test'
+
+# FIXME I have no idea what the server needs to build/run, the below is speculative.
+# see http://manual.seafile.com/build_seafile/linux.html
+DEPENDENCIES="
+    build:
+        dev-util/intltool
+
+    build+run:
+        dev-libs/libevent[>=2.0]
+        dev-libs/glib:2[>=2.16.0]
+        dev-libs/jansson[>=2.2.1]
+        net-libs/ccnet[>=0.9.3]
+        dev-libs/libsearpc[>=1.0]
+        sys-libs/zlib[>=1.2.0]
+        dev-db/sqlite:3
+        dev-libs/openssl
+        server? (
+            dev-libs/libevhtp
+            dev-libs/libzdb[>=2.10]
+            app-arch/libarchive[>=2.8.5]
+        )
+        client? ( net-misc/curl[>=7.17] )
+        fuse? ( sys-fs/fuse[>=2.7.3] )
+        riak? ( dev-db/riak )
+        python? ( dev-lang/python )
+"
+
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=(
+    client
+    server
+    riak
+    python
+    fuse
+)
