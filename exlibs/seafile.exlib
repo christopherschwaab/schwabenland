@@ -4,8 +4,6 @@
 # FIXME
 export EXJOBS=1
 
-require autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.13 ] ]
-
 myexparam seafile_version=
 exparam -v SEAFILE_VERSION seafile_version
 
