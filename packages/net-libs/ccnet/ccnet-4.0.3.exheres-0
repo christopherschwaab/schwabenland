@@ -1,7 +1,8 @@
 # Copyright 2013 Christopher Schwaab
 # Distributed under the terms of the GNU General Public License v2
 
-require seafile [ seafile_version=${PV} ]
+require seafile [ seafile_version=${PV} ] \
+        autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.13 ] ]
 
 SUMMARY="A framework for writing networked applications in C."
 

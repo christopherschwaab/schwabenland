@@ -1,7 +1,8 @@
 # Copyright 2013 Christopher Schwaab
 # Distributed under the terms of the GNU General Public License v2
 
-require seafile [ seafile_version=3.0.4 ]
+require seafile [ seafile_version=3.0.4 ] \
+        autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.13 ] ]
 
 SUMMARY="A simple and easy-to-use C language RPC framework (including both server side & client side) based on GObject System."
 
