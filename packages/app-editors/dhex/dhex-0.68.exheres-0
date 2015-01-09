@@ -1,0 +1,29 @@
+# Copyright 2015 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+MY_PNV=${PNV/-/_}
+
+SUMMARY="A themeable, ncurses based hex editor with a diff mode for binary files."
+HOMEPAGE="http://www.dettus.net/dhex/"
+DOWNLOADS="http://www.dettus.net/dhex/${MY_PNV}.tar.gz"
+
+LICENCES=""
+SLOT="0"
+PLATFORMS="~x86 ~amd64"
+MYOPTIONS=""
+RESTRICT='test'
+
+WORK="${WORKBASE}/${MY_PNV}"
+
+DEPENDENCIES="
+    build+run:
+        sys-libs/ncurses
+"
+
+BUGS_TO="christopher.schwaab@gmail.com"
+
+src_install() {
+    dobin dhex
+    dodoc README.txt
+    doman dhex.1 dhex_markers.5 dhex_searchlog.5 dhexrc.5
+}
