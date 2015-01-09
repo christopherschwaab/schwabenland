@@ -1,0 +1,50 @@
+# Copyright 2014 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="A tool used to control monitor parameters, like brightness and contrast."
+DESCRIPTION="
+A tool used to control monitor parameters, like brightness and contrast, without using the OSD (On
+Screen Display) and the buttons in front of the monitor.
+"
+HOMEPAGE="http://ddccontrol.sourceforge.net/"
+DOWNLOADS="
+    http://downloads.sourceforge.net/project/ddccontrol/ddccontrol/${PV}/${PNV}.tar.bz2?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fddccontrol%2Ffiles%2Fddccontrol%2F${PV}%2F&ts=1414871393 -> ${PNV}.tar.bz2
+"
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+MYOPTIONS="
+    doc
+    gtk
+"
+
+DEPENDENCIES="
+    build:
+        doc? (
+            app-text/docbook-xsl-stylesheets
+            dev-libs/libxslt
+        )
+        dev-util/intltool
+        dev-perl/XML-Parser
+        sys-devel/gettext
+        sys-kernel/linux-headers
+    build+run:
+        gtk? ( x11-libs/gtk+:2[>=2.4] )
+        dev-libs/libxml2
+        sys-apps/pciutils
+        app-misc/ddccontrol-db
+"
+
+BUGS_TO="christopher.schwaab@gmail.com"
+
+DEFAULT_SRC_CONFIGURE_PARAMS=( --enable-nls --disable-gnome-applet )
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=(
+    doc
+    'gtk gnome'
+)
+
+src_prepare() {
+    autotools_src_prepare
+    edo intltoolize --force --copy --automake
+}
