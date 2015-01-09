@@ -1,0 +1,22 @@
+# Copyright 2015 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.13 ] ]
+
+SUMMARY="A multi-platform command-line programmer for Atmel chips with a USB bootloader supporting ISP."
+DESCRIPTION="
+A multi-platform command-line programmer for Atmel (8051, AVR, XMEGA & AVR32) chips with a USB
+bootloader supporting ISP. Most Atmel devices having a USB port come pre-programmed with the
+bootloader, and this is a lightweight alternative to Atmel's own FLIP/BatchISP program. This is a
+mostly Device Firmware Update (DFU) 1.0 compliant user-space application.
+"
+HOMEPAGE="http://dfu-programmer.github.io/"
+DOWNLOADS="https://github.com/$PN/$PN/archive/v$PV.tar.gz"
+
+LICENCES="GPL-2"
+SLOT="0"
+
+DEPENDENCIES="
+    build+run:
+        dev-libs/libusb:1
+"
