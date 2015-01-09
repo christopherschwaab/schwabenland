@@ -1,0 +1,21 @@
+# Copyright 2014 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+FONT="${PN}"
+
+require xfont
+
+SUMMARY="Basic Latin, Greek, Cyrillic and many Symbol blocks of Unicode."
+HOMEPAGE="http://users.teilar.gr/~g1951d/"
+DOWNLOADS="http://users.teilar.gr/~g1951d/Symbola.ttf"
+
+LICENCES=""
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+
+WORK="${WORKBASE}"
+
+src_install() {
+    insinto /usr/share/fonts/X11/${PN}
+    doins "${FETCHEDDIR}/${PN}.ttf"
+}

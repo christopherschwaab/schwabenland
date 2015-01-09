@@ -1,7 +1,7 @@
 # Copyright 2013 Christopher Schwaab
 # Distributed under the terms of the GNU General Public License v2
 
-require github [ user='ellzey' rev='1.2.6' ] cmake
+require github [ user='ellzey' rev=${PV} ] cmake
 
 SUMMARY="A more flexible replacement for libevent's httpd API."
 HOMEPAGE="https://github.com/ellzey/libevhtp"
@@ -24,7 +24,7 @@ DEPENDENCIES="
 "
 
 src_prepare() {
-    sed -i 's/install (TARGETS libevhtp DESTINATION lib/install (TARGETS libevhtp DESTINATION ${LIB_INSTALL_DIR}/' \
+    sed -i "s~set (LIB_INSTALL_DIR \"\${CMAKE_INSTALL_PREFIX}/lib\")~set (LIB_INSTALL_DIR \"\${CMAKE_INSTALL_PREFIX}/$LIBDIR\")~" \
            "${WORK}/CMakeLists.txt"
-    cmake_src_prepare
+    default
 }
