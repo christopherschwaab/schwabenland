@@ -1,0 +1,71 @@
+
+# Copyright 2015 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="A platform built on Chrome's JavaScript runtime for easily building fast, scalable network applications."
+DESCRIPTION="
+Designed with an event-driven, non-blocking I/O model that makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices.
+"
+HOMEPAGE="https://nodejs.org/"
+DOWNLOADS="https://nodejs.org/dist/v${PV}/node-v${PV}.tar.gz"
+
+LICENCES="Apache-1.1 Apache-2.0 BSD BSD-2 MIT"
+SLOT="0"
+MYOPTIONS="
+    gdb
+    npm
+    static
+"
+
+DEPENDENCIES="
+    build:
+        dev-lang/python:*[<3.0]
+    build+run:
+        virtual/libssl
+        dev-libs/libuv
+"
+
+BUGS_TO="christopher.schwaab@gmail.com"
+
+UPSTREAM_CHANGELOG="https://nodejs.org/changelog.html"
+UPSTREAM_DOCUMENTATION="https://nodejs.org/api/"
+UPSTREAM_RELEASE_NOTES="http://blog.nodejs.org/release/"
+
+SRC_CONFIGURE_PARAMS=(
+    --shared-openssl
+    --shared-libuv
+    --shared-http-parser
+    --shared-zlib
+    --without-dtrace
+    --dest-os=linux
+)
+SRC_CONFIGURE_OPTION_WITHS=( npm )
+
+WORK="${WORKBASE}/node-v${PV}"
+
+nodejs_src_prepare() {
+    sed -i "s/python/python2/" deps/npm/node_modules/node-gyp/gyp/gyp
+    sed -i "s/pkg-config/$(exhost --target)-pkg-config/g" configure
+}
+
+nodejs_src_configure() {
+    local destcpu=
+    case $(exhost --target) in
+        i?86-*)   destcpu=ia32 ;;
+        x86_64-*) destcpu=x64 ;;
+        arm*-*)   destcpu=arm ;;
+        *) die "Unrecognized host: $(exhost --target)" ;;
+    esac
+    env CXX=$(exhost --target)-g++ \
+        CXX_host=$(exhost --build)-g++ \
+        AR_host=$(exhost --build)-ar \
+      python2 configure \
+          --prefix=/usr/$(exhost --target) \
+          --dest-cpu=$destcpu \
+          "${SRC_CONFIGURE_PARAMS[@]}" \
+          $(for s in "${DEFAULT_SRC_CONFIGURE_OPTION_WITHS[@]}" ; do \
+              option_with ${s} ; \
+          done )
+}
+
+export_exlib_phases src_prepare src_configure

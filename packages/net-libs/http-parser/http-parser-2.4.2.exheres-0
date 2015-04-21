@@ -1,0 +1,7 @@
+# Copyright 2015 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+GITHUB_TAG=v${PV}
+require http-parser
+
+PLATFORMS="~amd64 ~arm ~x86"

@@ -1,0 +1,24 @@
+# Copyright 2015 Christopher Schwaab <christopher.schwaab@gmail.com>
+# Distributed under the terms of the GNU General Public License
+# Based in part on "dejavu-2.34.exheres-0" which is:
+# Copyright 2008 Bernd Steinhauser <berniyh@exherbo.org>
+
+FONT="${PN}"
+
+require github [ user=adobe-fonts ] xfont
+
+SUMMARY="A monospaced font family for user interface and coding environments."
+HOMEPAGE="http://adobe-fonts.github.io/${PN}/"
+
+SLOT="0"
+
+source-code-pro_src_install() {
+    # Install doc files
+    default
+
+    insinto /usr/share/fonts/X11/${PN}/
+    doins "${WORK}"/TTF/*.ttf
+    doins "${WORK}"/OTF/*.otf
+}
+
+export_exlib_phases src_install

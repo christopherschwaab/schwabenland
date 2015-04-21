@@ -1,0 +1,39 @@
+
+# Copyright 2015 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+# FIXME
+EXJOBS=1
+
+SUMMARY="A library to realize multilingualization of many aspects of applications."
+HOMEPAGE="http://www.nongnu.org/m17n/"
+DOWNLOADS="http://download.savannah.gnu.org/releases/m17n/${PNV}.tar.gz"
+
+LICENCES="LGPL-2.1"
+SLOT="0"
+MYOPTIONS="
+    X
+    gd
+"
+
+DEPENDENCIES="
+    build:
+        dev-util/pkg-config
+    build+run:
+        dev-db/m17n-db[=${PV}]
+        dev-libs/libxml2
+        X? (
+            x11-libs/libXft
+            gd? ( media-libs/gd )
+            dev-libs/fribidi
+            dev-libs/libotf
+        )
+"
+
+BUGS_TO="christopher.schwaab@gmail.com"
+
+UPSTREAM_CHANGELOG="http://git.savannah.gnu.org/cgit/m17n/m17n-lib.git/plain/ChangeLog"
+UPSTREAM_DOCUMENTATION="${HOMEPAGE}/manual-en/ [[ lang = en description = [ Library documentation. ] ]]"
+
+DEFAULT_SRC_CONFIGURE_OPTION_WITHS=( 'X gui' )
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=( 'gd' )

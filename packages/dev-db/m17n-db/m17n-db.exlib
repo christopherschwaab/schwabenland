@@ -1,0 +1,19 @@
+# Copyright 2015 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="Database for m17n-lib."
+HOMEPAGE="http://www.nongnu.org/m17n/"
+DOWNLOADS="http://download.savannah.gnu.org/releases/m17n/${PNV}.tar.gz"
+
+LICENCES="LGPL-2.1"
+SLOT="0"
+
+DEPENDENCIES="
+    build+run:
+        sys-devel/gettext
+"
+
+BUGS_TO="christopher.schwaab@gmail.com"
+
+UPSTREAM_CHANGELOG="http://git.savannah.gnu.org/cgit/m17n/m17n-db.git/plain/ChangeLog"
+

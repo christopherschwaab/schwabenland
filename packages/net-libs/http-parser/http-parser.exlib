@@ -1,0 +1,33 @@
+
+# Copyright 2015 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require github [ user=joyent ]
+
+SUMMARY="HTTP request/response parser for C."
+
+LICENCES="MIT"
+SLOT="0"
+MYOPTIONS="static"
+
+BUGS_TO="christopher.schwaab@gmail.com"
+
+PREFIX=/usr/$(exhost --target)
+
+http-parser_src_compile() {
+    emake library
+    optionq static && emake package
+}
+
+http-parser_src_install() {
+    local libname=libhttp_parser
+    local prefix=/usr/$(exhost --target)
+
+    insinto ${prefix}/include
+    doins http_parser.h
+    dolib.so ${libname}.so.${PV}
+    dosym ${libname}.so.${PV} ${prefix}/lib/${libname}.so
+    optionq static && dolib.a ${libname}.a
+}
+
+export_exlib_phases src_compile src_install

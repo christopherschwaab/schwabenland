@@ -1,0 +1,23 @@
+# Copyright 2015 Christopher Schwaab <christopher.schwaab@gmail.com>
+# Distributed under the terms of the GNU General Public License
+# Based in part on "dejavu-2.34.exheres-0" which is:
+# Copyright 2008 Bernd Steinhauser <berniyh@exherbo.org>
+
+FONT="${PN}"
+
+require github [ user=i-tu suffix=zip release=${PV} ] xfont
+
+SUMMARY="A Haskell code font with monospaced ligatures."
+
+SLOT="0"
+WORK="${WORKBASE}"
+
+Hasklig_src_install() {
+    # Install doc files
+    default
+
+    insinto /usr/share/fonts/X11/${PN}/
+    doins "${WORK}"/*.otf
+}
+
+export_exlib_phases src_install

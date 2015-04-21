@@ -1,0 +1,5 @@
+# Copyright 2015 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require m17n-lib
+PLATFORMS="~amd64 ~arm ~x86"
