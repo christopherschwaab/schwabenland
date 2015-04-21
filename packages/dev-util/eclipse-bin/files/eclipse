@@ -1,2 +1,0 @@
-#!/bin/sh
-exec env ECLIPSE_HOME=/usr/lib/eclipse /usr/lib/eclipse/eclipse "$@"

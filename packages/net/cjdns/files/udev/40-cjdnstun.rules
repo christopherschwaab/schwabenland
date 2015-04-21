@@ -1,1 +1,0 @@
-KERNEL=="tun", NAME="net/cjdroute0", GROUP="cjdns", USER="cjdns"

@@ -1,9 +1,0 @@
-# Copyright 2013 Christopher Schwaab
-# Distributed under the terms of the GNU General Public License v2
-
-WORK="${WORKBASE}/${PN}"
-
-require lal
-
-PLATFORMS="~amd64 ~x86"
-DOWNLOADS="http://projects.l3ib.org/lal/files/${PNV}.tar.gz"
