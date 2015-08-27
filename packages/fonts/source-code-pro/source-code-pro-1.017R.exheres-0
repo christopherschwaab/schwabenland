@@ -1,8 +1,0 @@
-# Copyright 2015 Christopher Schwaab
-# Distributed under the terms of the GNU General Public License v2
-
-require source-code-pro
-
-LICENCES="OFL-1.1"
-PLATFORMS="~amd64 ~arm ~x86"
-BUGS_TO="christopher.schwaab@gmail.com"
