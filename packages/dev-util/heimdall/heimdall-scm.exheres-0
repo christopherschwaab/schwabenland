@@ -1,0 +1,33 @@
+# Copyright 2015 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require cmake \
+        github [ user='Benjamin-Dobell' pn=Heimdall ] \
+        udev-rules [ udev_files=[ "${WORK}/heimdall/60-heimdall.rules" ] ]
+
+SUMMARY="A cross-platform open-source tool suite used to flash firmware onto Samsung mobile devices."
+HOMEPAGE="http://glassechidna.com.au/heimdall/"
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64 ~x86 ~arm"
+DEPENDENCIES="
+    build+run:
+        dev-libs/libusb
+"
+MYOPTIONS="udev"
+
+RESTRICT=( test )
+
+src_prepare() {
+    expatch "${FILES}/BridgeManager.patch"
+    edo sed -e 's/add_subdirectory(heimdall-frontend)//' \
+            -e 's/add_dependencies(heimdall-frontend heimdall)//' \
+            -i CMakeLists.txt
+    default
+}
+
+src_install() {
+    optionq udev && install_udev_files
+    dobin "${ECMAKE_BUILD_DIR}/bin/heimdall"
+}
