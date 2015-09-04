@@ -1,0 +1,53 @@
+# Copyright 2015 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.15 ] ] \
+        github [ user=horst3180 ]
+
+SUMMARY="A flat theme with transparent elements for GTK 3, GTK 2 and Gnome-Shell."
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86 ~arm"
+MYOPTIONS="
+    transparency [[ description = [ Use transparency in the GTK3 theme. ] ]]
+    light        [[ description = [ Enable light theme variant. ] ]]
+    darker       [[ description = [ Enable darker theme variant. ] ]]
+    dark         [[ description = [ Enable dark theme variant. ] ]]
+    cinnamon
+    gnome-shell
+    gtk2
+    gtk3
+    metacity
+    xfwm4
+    xfce-notify  [[ description = [ Enable XFCE notify support. ] ]]
+"
+
+DEPENDENCIES="
+    build+run:
+        gnome-desktop/gnome-themes-standard
+        cinnamon? ( cinnamon-desktop/cinnamon )
+        gnome-shell? ( gnome-desktop/gnome-shell )
+        gtk2? (
+            x11-libs/gtk+:2
+            x11-themes/gtk-engines-murrine
+        )
+        gtk3? ( x11-libs/gtk+:3 )
+        metacity? ( gnome-desktop/metacity )
+        xfwm4? ( xfce-base/xfwm4 )
+        xfce-notify? ( xfce-extra/xfce4-notifyd )
+"
+
+DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=(
+    transparency
+    light
+    darker
+    dark
+    cinnamon
+    gnome-shell
+    gtk2
+    gtk3
+    metacity
+    'xfwm4 xfmw'
+    xfce-notify
+)
