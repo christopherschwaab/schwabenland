@@ -1,0 +1,6 @@
+# Copyright 2015 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require noto [ hinting=[ unhinted ] serifs=[ sans ] ]
+
+PLATFORMS="~amd64 ~x86 ~arm"

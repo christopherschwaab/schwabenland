@@ -1,0 +1,41 @@
+# Copyright 2015 Christopher Schwaab <christopher.schwaab@gmail.com>
+# Distributed under the terms of the GNU General Public License v2
+
+export FONT="Noto"
+require xfont
+
+export_exlib_phases src_install
+
+myexparam font=${PN/Noto/}
+myexparam hinting=[ "hinted" "unhinted" ]
+myexparam serifs=[ "serif" "sans" ]
+
+exparam -v hinting hinting[@]
+exparam -v serifs serifs[@]
+
+MYOPTIONS=""
+MYOPTIONS+="( ${hinting[@]} ) [[ number-selected = at-least-one ]] "
+MYOPTIONS+="( ${serifs[@]} ) [[ number-selected = at-least-one ]]"
+
+serifs=( "${serifs[@],,}" )
+serifs=( $(printf "Noto%s$(exparam font) " "${serifs[@]/s/S}") )
+
+fonts=()
+for f in "$serifs"; do
+        fonts+=( $(printf "$f-%s.zip " "${hinting[@]}") )
+done
+
+SUMMARY="A font family that aims to support all languages with a harmonious look and feel."
+HOMEPAGE="https://www.google.com/get/noto/"
+
+LICENCES="Apache-2.0"
+SLOT="0"
+DOWNLOADS="$(printf "https://noto-website-2.storage.googleapis.com/pkgs/%s " "${fonts[@]}")"
+
+WORK="${WORKBASE}"
+
+noto_src_install() {
+    default
+    insinto /usr/share/fonts/X11/Noto/
+    doins "${WORK}"/*.ttf
+}
