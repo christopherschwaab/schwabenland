@@ -1,0 +1,26 @@
+# Copyright 2015 Jonathan Dahan <jonathan@jonathan.is>
+# Distributed under the terms of the GNU General Public
+
+MY_PN=bar
+require github [ user=LemonBoy tag=v1.1 ]
+
+SUMMARY="An EWMH compliant lightweight, xcb based bar with UTF-8 support."
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86 ~arm"
+MYOPTIONS=""
+
+DEPENDENCIES="
+    build+run:
+        x11-libs/libxcb
+    build:
+        dev-lang/perl:* [[ description = [ pod2man is used to build the manpage ] ]]
+"
+
+DEFAULT_SRC_INSTALL_EXCLUDE=( "README.pod" )
+
+DEFAULT_SRC_INSTALL_PARAMS=(
+    PREFIX=/usr/$(exhost --target)
+)
+
