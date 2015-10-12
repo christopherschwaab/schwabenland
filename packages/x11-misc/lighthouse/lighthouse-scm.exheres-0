@@ -1,0 +1,32 @@
+# Copyright 2015 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require github [ user=emgram769 ]
+
+SUMMARY="A simple scriptable popup dialog to run on X."
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64 ~x86 ~arm"
+DEPENDENCIES="
+    build+run:
+        x11-libs/libX11
+        x11-libs/libxcb
+        x11-libs/cairo
+"
+
+RESTRICT="test"
+
+src_prepare() {
+    sed -e 's/CC=gcc/CC?=gcc/' \
+        -e 's/pkg-config/$(PKG_CONFIG)/g' \
+        -i Makefile
+}
+
+src_install() {
+    dobin lighthouse
+    exeinto "/usr/share/${PN}"
+    doexe config/lighthouse/{cmd,main}.py
+    insinto "/usr/share/${PN}"
+    doins -r config/lighthouse/{scripts,cmd,google.py,lighthouserc,scripts.json}
+}
