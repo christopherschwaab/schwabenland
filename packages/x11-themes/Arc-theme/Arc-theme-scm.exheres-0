@@ -51,3 +51,5 @@ DEFAULT_SRC_CONFIGURE_OPTION_ENABLES=(
     'xfwm4 xfmw'
     xfce-notify
 )
+
+export HAVE_PKG_CONFIG=yes
