@@ -1,0 +1,35 @@
+# Copyright 2016 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+SUMMARY="Firmware for Tonga Radeon GPUs."
+DESCRIPTION="
+tonga_ce.bin
+tonga_mc.bin
+tonga_me.bin
+tonga_mec.bin
+tonga_mec2.bin
+tonga_pfp.bin
+tonga_rlc.bin
+tonga_sdma.bin
+tonga_sdma1.bin
+tonga_smc.bin
+tonga_uvd.bin
+tonga_vce.bin
+"
+HOMEPAGE="http://people.freedesktop.org/~agd5f/radeon_ucode/"
+
+LICENCES="radeon-ucode"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+
+DEPENDENCIES="firmware/radeon-ucode"
+
+BUGS_TO="christopher.schwaab@gmail.com"
+
+WORK="${WORKBASE}"
+
+src_install() {
+    edo tar -xJpf "${FILES}/${PNV}.tar.xz"
+    insinto /usr/$(exhost --target)/lib/firmware/radeon/tonga
+    doins *.bin
+}
