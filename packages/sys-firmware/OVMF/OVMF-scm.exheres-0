@@ -1,0 +1,80 @@
+# Copyright 2016 Christopher Schwaab
+# Based off of the coreos ebuild:
+#  https://github.com/coreos/coreos-overlay/blob/master/sys-firmware/edk2-ovmf/edk2-ovmf-99999.ebuild
+# Distributed under the terms of the GNU General Public License v2
+
+require github [ user=tianocore pn=edk2 ] \
+        toolchain-funcs
+
+SUMMARY="EDK II Open Source UEFI Firmware"
+HOMEPAGE="http://www.tianocore.org/ovmf/"
+
+LICENCES="BSD-2"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS="qemu"
+
+DEPENDENCIES="
+    build:
+        sys-power/iasl
+        dev-lang/nasm
+        dev-lang/python:2.7
+    build+run:
+        qemu? ( app-virtualization/qemu )
+"
+
+_TARGET_ARCH=X64
+_TARGET_NAME=RELEASE
+_TARGET_TOOLS=GCC44
+
+src_configure() {
+    ./edksetup.sh
+    gcc_prefix="$(exhost --target)-"
+    # Adapted from OvmfPkg/build.sh on 2016-08-19
+    case $(${gcc_prefix}gcc -dumpversion) in
+          4.5.*)
+            _TARGET_TOOLS=GCC45
+            ;;
+          4.6.*)
+            _TARGET_TOOLS=GCC46
+            ;;
+          4.7.*)
+            _TARGET_TOOLS=GCC47
+            ;;
+          4.8.*)
+            _TARGET_TOOLS=GCC48
+            ;;
+          4.9.*|4.1[0-9].*)
+            _TARGET_TOOLS=GCC49
+            ;;
+          5.*.*)
+            _TARGET_TOOLS=GCC5
+            ;;
+          *)
+            ;;
+    esac
+    edo sed -i "s/DEF(${_TARGET_TOOLS}_IA32_PREFIX)make/make/g" \
+               Conf/tools_def.txt
+}
+
+src_compile() {
+    emake ${_TARGET_TOOLS}_BIN=${gcc_prefix} ARCH=$_TARGET_ARCH -C BaseTools -j1
+    env ${_TARGET_TOOLS}_BIN=${gcc_prefix} ./OvmfPkg/build.sh \
+        -a $_TARGET_ARCH \
+        -b $_TARGET_NAME \
+        -t $_TARGET_TOOLS \
+        -p OvmfPkg/OvmfPkgX64.dsc \
+        -n $EXJOBS \
+        -D FD_SIZE_2MB \
+        --enable-flash
+}
+
+src_install() {
+    insinto /usr/share/${PN}
+    doins Build/Ovmf${_TARGET_ARCH}/${_TARGET_NAME}_${_TARGET_TOOLS}/FV/OVMF{,_CODE,_VARS}.fd
+    dosym OVMF.fd /usr/share/${PN}/bios.bin
+    if optionq qemu; then
+        mkdir ${IMAGE}/usr/share/qemu/
+        dosym /usr/share/OVMF/OVMf.bin /usr/share/qemu/efi-bios.bin
+    fi
+}
