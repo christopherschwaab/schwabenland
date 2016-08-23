@@ -1,0 +1,27 @@
+# Copyright 2016 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require github [ user=iksaif ]
+
+SUMMARY="A tool to dump WMI informations from ACPI tables."
+
+LICENCES="GPL-2"
+SLOT="0"
+PLATFORMS="~amd64 ~x86"
+
+DEPENDENCIES="
+    build+run:
+        dev-lang/python
+"
+
+RESTRICT=(test)
+
+src_prepare() {
+    sed -i "s/gcc/$(exhost --target)-gcc/" Makefile
+    sed -i "1i#!/usr/$(exhost --target)/bin/env python" wmixtract.py
+}
+
+src_install() {
+    exeinto "/usr/$(exhost --target)/bin"
+    doexe wmidump wmixtract.py
+}
