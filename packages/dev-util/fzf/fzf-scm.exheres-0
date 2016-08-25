@@ -1,0 +1,63 @@
+# Copyright 2016 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+SCM_go_shellwords_REPOSITORY="https://github.com/junegunn/go-shellwords"
+SCM_go_runewidth_REPOSITORY="https://github.com/junegunn/go-runewidth"
+SCM_SECONDARY_REPOSITORIES="go_shellwords go_runewidth"
+
+require bash-completion zsh-completion \
+        github [ user=junegunn ]
+
+SUMMARY="A command-line fuzzy finder written in Go."
+
+LICENCES="MIT"
+SLOT="0"
+PLATFORMS="~amd64"
+MYOPTIONS="
+    bash-completion
+    neovim [[ description = [ Install the fzf vim plugin for neovim ] ]]
+    vim [[ description = [ Install the fzf vim plugin ] ]]
+    zsh-completion
+"
+
+DEPENDENCIES="
+    build+run:
+        dev-lang/go
+        vim? ( app-editors/vim )
+        neovim? ( app-editors/neovim )
+"
+
+_BUILD="$WORK/gopath/src/github.com/junegunn/"
+_BINARY=fzf-linux_amd64
+
+src_prepare() {
+    mkdir -p "$_BUILD/fzf/"
+    ln -s "$WORK/src/" "$_BUILD/"
+    ln -s "$WORKBASE/go_shellwords" "$_BUILD/go-shellwords"
+    ln -s "$WORKBASE/go_runewidth" "$_BUILD/go-runewidth"
+}
+
+src_compile() {
+    cd src
+    emake fzf/$_BINARY
+}
+
+src_install() {
+    newbin "$_BUILD/fzf/src/fzf/$_BINARY" fzf
+    optionq bash-completion && dobashcompletion shell/completion.bash
+    optionq zsh-completion && dozshcompletion shell/completion.zsh
+    if optionq vim; then
+        insinto /usr/share/vim/vimfiles/plugin
+        doins plugin/fzf.vim
+    fi
+
+    if optionq neovim; then
+        insinto /usr/share/nvim/runtime/plugin
+        doins plugin/fzf.vim
+    fi
+}
+
+src_test() {
+    cd src
+    emake test
+}
