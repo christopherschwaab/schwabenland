@@ -1,0 +1,27 @@
+# Copyright 2014 Thomas Anderson
+# Distributed under the terms of the GNU General Public License v2
+
+require enlightenment
+
+SUMMARY="An EDC script editor tool that supports text editing and previewing functions for the EDC source code. "
+
+LICENCES="BSD-2"
+SLOT="0"
+PLATFORMS="~amd64"
+
+DEPENDENCIES="
+    build+run:
+        enlightenment-platform/efl[=1.17.0]
+        enlightenment-desktop/elementary[=1.17.0]
+"
+
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    --with-eet-eet=/usr/$(exhost --target)/bin/eet
+    --with-edje-cc=/usr/$(exhost --target)/bin/edje_cc
+    --with-eolian-gen=/usr/$(exhost --target)/bin/eolian_gen
+    --with-eolian-cxx=/usr/$(exhost --target)/bin/eolian_cxx
+)
+
+src_prepare() {
+    sed -i 's/(--g[ch])/--eo \1/g' Makefile_Eolian_Helper.am
+}
