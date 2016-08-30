@@ -1,0 +1,17 @@
+# Copyright 2016 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require github [ user=FortAwesome pn=Font-Awesome tag=v${PV} ] xfont
+
+SUMMARY="The iconic font and CSS toolkit."
+HOMEPAGE="http://fontawesome.io/"
+
+LICENCES="CCPL-Attribution-3.0 OFL-1.1"
+SLOT="0"
+PLATFORMS="~amd64 ~x86 ~arm"
+
+src_install() {
+    default
+    insinto /usr/share/fonts/X11/${PN}/
+    doins "${WORK}"/fonts/{FontAwesome.otf,fontawesome-webfont.ttf}
+}
