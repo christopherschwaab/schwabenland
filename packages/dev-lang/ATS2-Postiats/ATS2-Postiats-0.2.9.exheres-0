@@ -1,0 +1,62 @@
+# Copyright 2013 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+require sourceforge [ project='ats2-lang' suffix=tgz ] \
+        autotools [ supported_autoconf=[ 2.5 ] supported_automake=[ 1.13 ] ]
+
+SUMMARY="A statically typed programming language with dependent and linear types."
+DESCRIPTION="
+A statically typed programming language that unifies implementation with formal specification. It is equipped with a highly expressive type system rooted in the framework Applied Type System, which gives the language its name. In particular, both dependent types and linear types are available in ATS. The current implementation of ATS (ATS/Anairiats) is written in ATS itself. It can be as efficient as C/C++ (see The Computer Language Benchmarks Game for concrete evidence) and supports a variety of programming paradigms that include: functional, imperative, concurrent, and modular programming.
+"
+HOMEPAGE="http://www.ats-lang.org/"
+
+LICENCES="GPL-3"
+SLOT="0"
+PLATFORMS="~amd64 ~x86 ~arm"
+MYOPTIONS="
+    (
+        gc [[ description = [ Run patsopt with GC when called to compile ATS source. ] ]]
+        boehm-gc [[ description = [ Run patsopt with GC when called to compile ATS source. ] ]]
+    ) [[ number-selected = at-most-one ]]
+    platform: x86 amd64
+"
+
+DEPENDENCIES="
+    build+run:
+        dev-libs/gmp
+        boehm-gc? ( dev-libs/boehm-gc )
+"
+
+RESTRICT=( test )
+
+DEFAULT_SRC_CONFIGURE_PARAMS=(
+    --hates=disable-dependency-tracking
+    --hates=disable-silent-rules
+    --hates=enable-fast-install
+)
+DEFAULT_SRC_COMPILE_PARAMS=(
+    -j1
+    CC=$(exhost --target)-gcc
+    CCOMP=$(exhost --target)-gcc
+    CPP=$(exhost --target)-cpp
+    AR=$(exhost --target)-ar
+    ARR="$(exhost --target)-ar -r"
+)
+
+src_prepare() {
+    sed -i "s/CCOMP=gcc/CCOMP=$(exhost --target)-gcc/" Makefile
+    sed -i "s/ld -r -o/$(exhost --target)-ld -r -o/" src/CBOOT/Makefile
+}
+
+src_compile() {
+    emake \
+      $(option gc "GCFLAGS=-D_ATS_GCATS" $(option boehm-gc "GCFLAGS=-D_ATS_GCBDW" "")) \
+      "${DEFAULT_SRC_COMPILE_PARAMS[@]}" \
+      all
+}
+
+src_install() {
+    local atslib_dir="${IMAGE}/usr/$(exhost --target)/lib/${PNV,,}/ccomp/atslib"
+    default
+    edo rmdir "${atslib_dir}"/{lib32,lib64,output}
+}
