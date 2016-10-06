@@ -1,0 +1,63 @@
+# Copyright 2016 Christopher Schwaab
+# Distributed under the terms of the GNU General Public License v2
+
+# Adapted from the arch pkgbuild by Muflone, Rustam Tsurik, Prashant Vaibhav, Alessio 'mOLOk'
+# Bolognino, and Rubin Simons:
+#   https://www.archlinux.org/packages/community/x86_64/hfsprogs/
+
+SUMMARY="HFS/HFS+ user space utils"
+HOMEPAGE="http://www.opensource.apple.com/"
+DOWNLOADS="
+    https://opensource.apple.com/tarballs/diskdev_cmds/diskdev_cmds-${PV}.tar.gz
+    http://ftp.de.debian.org/debian/pool/main/h/hfsprogs/${PN}_${PV}-11.debian.tar.gz
+"
+
+LICENCES="APSL-2.0"
+SLOT="0"
+PLATFORMS="~amd64"
+
+DEPENDENCIES="
+    build+run:
+        dev-libs/libbsd
+        dev-libs/openssl
+"
+
+RESTRICT=( test )
+WORK="${WORKBASE}/diskdev_cmds-${PV}"
+
+DEFAULT_SRC_PREPARE_PATCHES=(
+    "${WORKBASE}"/debian/patches/0001-Create-short-Makefiles-for-Debian.patch
+    "${WORKBASE}"/debian/patches/0008-Provide-command-line-option-a.patch
+    "${WORKBASE}"/debian/patches/0009-Rename-dprintf-to-dbg_printf.patch
+    "${WORKBASE}"/debian/patches/0006-Adjust-types-for-printing.patch
+    "${WORKBASE}"/debian/patches/0003-Add-helper-include-files-absent-from-the-upstream-pa.patch
+    "${WORKBASE}"/debian/patches/0005-Remove-Apple-specific-p-from-strings.patch
+    "${WORKBASE}"/debian/patches/0011-Fix-types.patch
+    "${WORKBASE}"/debian/patches/0007-Fix-path-for-HFS-wrapper-block.patch
+    "${WORKBASE}"/debian/patches/0013-Fix-manpages.patch
+    "${WORKBASE}"/debian/patches/0002-Add-exclude-Darwin-specific-code.patch
+    "${WORKBASE}"/debian/patches/0004-Fix-compilation-on-64-bit-arches.patch
+    "${WORKBASE}"/debian/patches/0012-Fix-mkfs-not-creating-UUIDs-for-new-filesystems.patch
+)
+
+DEFAULT_SRC_COMPILE_PARAMS=( -f Makefile.lnx )
+
+src_prepare() {
+    default
+    edo sed \
+      -e "s~CFLAGS += -I$(PWD)/include~CFLAGS += `$(exhost --target)-pkg-config --cflags libbsd`~" \
+      -e "s~CC := gcc~ CC := $(exhost --target)-gcc~" \
+      -i Makefile.lnx
+    edo sed -i "s/ar rc \$@ \$?/$(exhost --target)-ar rc \$@ \$?/" fsck_hfs.tproj/dfalib/Makefile.lnx
+}
+
+src_install() {
+    newbin newfs_hfs.tproj/newfs_hfs mkfs.hfsplus
+    newbin fsck_hfs.tproj/fsck_hfs fsck.hfsplus
+
+    insinto "/usr/share/${PN}"
+    newins newfs_hfs.tproj/hfsbootdata.img hfsbootdata
+
+    newman newfs_hfs.tproj/newfs_hfs.8 mkfs.hfsplus.8
+    newman fsck_hfs.tproj/fsck_hfs.8 fsck.hfsplus.8
+}
